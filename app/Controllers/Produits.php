@@ -1,97 +1,113 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\ProduitsModel;
+use App\Models\CategorieModel;
+
 class Produits extends BaseController
 {
     public function index(): string
     {
-        return view('produits');
+        return $this->get_all_produits();
     }
 
-    public function add_produit()
+    public function add_produit(): string
     {
-        $produit = $this->request->getPost('produit');
-        $prix = $this->request->getPost('prix');
+        // Récupérer toutes les catégories pour les afficher dans la vue
+        $categorieModel = new CategorieModel();
+        $categories = $categorieModel->findAll();
+
+        return view('add_produit', ['categories' => $categories]);
+    }
+
+    public function create_produit()
+    {
+        $produit = $this->request->getPost('nomProduit');
+        $description = $this->request->getPost('description');
         $quantite = $this->request->getPost('quantite');
+        $seuil_alerte = $this->request->getPost('seuil_alerte');
         $categorie = $this->request->getPost('categorie');
 
         // Validation
-        if (empty($produit) || empty($prix) || empty($quantite) || empty($categorie)) {
+        if (empty($produit) || empty($description) || empty($quantite) || empty($seuil_alerte) || empty($categorie)) {
             return redirect()->back()->with('error', 'Tous les champs sont obligatoires.');
         }
 
         // Enregistrement dans la base de données
-        $model = new \App\Models\ProduitsModel();
-        $model->save([
-            'produit' => $produit,
-            'prix' => $prix,
-            'quantite' => $quantite,
-            'categorie' => $categorie,
-        ]);
+        $model = new ProduitsModel();
+        $data = [
+            'nom_produit' => $produit,
+            'description' => $description,
+            'quantite_stock' => $quantite,
+            'seuil_alerte' => $seuil_alerte,
+            'id_categorie' => $categorie
+        ];
 
-        return redirect()->to('/produit')->with('success', 'Produit ajouté avec succès.');
-    }
-
-    public function delete_produit($id)
-    {
-        $model = new \App\Models\ProduitsModel();
-        $model->delete($id);
-
-        return redirect()->to('/produit')->with('success', 'Produit supprimé avec succès.');
+        if ($model->save($data)) {
+            // Succès
+            return redirect()->to('/add_produit')->with('success', 'Produit ajouté avec succès.');
+        } else {
+            // Échec
+            return redirect()->back()->with('error', 'Erreur lors de l\'enregistrement du produit.');
+        }
     }
 
     public function edit_produit($id)
     {
-        $model = new \App\Models\ProduitsModel();
-        $produit = $model->find($id);
+        $produitModel = new ProduitsModel();
+        $categorieModel = new CategorieModel();
+
+        // Récupérer le produit à modifier
+        $produit = $produitModel->find($id);
+
+        // Récupérer toutes les catégories pour les afficher dans la vue
+        $categories = $categorieModel->findAll();
 
         if ($this->request->getMethod() === 'post') {
-            $produit = $this->request->getPost('produit');
-            $prix = $this->request->getPost('prix');
+            $produit = $this->request->getPost('nomProduit');
+            $description = $this->request->getPost('description');
             $quantite = $this->request->getPost('quantite');
+            $seuil_alerte = $this->request->getPost('seuil_alerte');
             $categorie = $this->request->getPost('categorie');
 
             // Validation
-            if (empty($produit) || empty($prix) || empty($quantite) || empty($categorie)) {
+            if (empty($produit) || empty($description) || empty($quantite) || empty($seuil_alerte) || empty($categorie)) {
                 return redirect()->back()->with('error', 'Tous les champs sont obligatoires.');
             }
 
-            // Enregistrement dans la base de données
-            $model->update($id, [
-                'produit' => $produit,
-                'prix' => $prix,
-                'quantite' => $quantite,
-                'categorie' => $categorie,
+            // Mise à jour dans la base de données
+            $produitModel->update($id, [
+                'nom_produit' => $produit,
+                'description' => $description,
+                'quantite_stock' => $quantite,
+                'seuil_alerte' => $seuil_alerte,
+                'id_categorie' => $categorie
             ]);
 
             return redirect()->to('/produit')->with('success', 'Produit modifié avec succès.');
         }
 
-        return view('edit_produit', ['produit' => $produit]);
+        return view('edit_produit', ['produit' => $produit, 'categories' => $categories]);
     }
 
-    public function get_produit($id)
+    public function delete_produit($id)
     {
-        $model = new \App\Models\ProduitsModel();
-        $produit = $model->find($id);
+        $model = new ProduitsModel();
+        $model->delete($id);
 
-        return view('produit', ['produit' => $produit]);
+        return redirect()->to('/produit')->with('success', 'Produit supprimé avec succès.');
     }
 
     public function get_all_produits()
     {
-        $model = new \App\Models\ProduitsModel();
-        $produits = $model->findAll();
+        
+
+        $produitsModel = new \App\Models\ProduitsModel();
+        $produits = $produitsModel
+            ->select('produit.*, categorie.nom_categorie')
+            ->join('categorie', 'categorie.id_categorie = produit.id_categorie', 'left') // Utilisation d'une jointure LEFT
+            ->findAll();
 
         return view('produits', ['produits' => $produits]);
     }
-    
-    public function get_produit_by_categorie($categorie)
-    {
-        $model = new \App\Models\ProduitsModel();
-        $produits = $model->where('categorie', $categorie)->findAll();
-
-        return view('produits', ['produits' => $produits]);
-    }
-
 }

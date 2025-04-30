@@ -4,7 +4,6 @@ namespace App\Controllers;
 use App\Models\UsersModel;
 
 
-
 class AuthController extends BaseController
 {
     public function login()

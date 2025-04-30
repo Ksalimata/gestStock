@@ -8,7 +8,12 @@ class Users extends BaseController
         return view('users');
     }
 
-    public function add_user()
+    public function add_user(): string
+    {
+        return view('add_users');
+    }
+
+    public function create_user()
     {
         $username = $this->request->getPost('username');
         $password = $this->request->getPost('password');

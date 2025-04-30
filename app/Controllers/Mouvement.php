@@ -8,7 +8,12 @@ class Mouvement extends BaseController
         return view('mouvement');
     }
 
-    public function add_mouvement()
+    public function add_mouvement(): string
+    {
+        return view('add_mouvement');
+    }
+
+    public function create_mouvement()
     {
         $produit = $this->request->getPost('produit');
         $prix = $this->request->getPost('prix');
