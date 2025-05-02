@@ -16,36 +16,39 @@
                         <div class="card mb-4">
                             <div class="card-body">
                                 <div class="card-title mb-3">Modifier un produit</div>
-                                <form>
+                                <form action="<?= base_url('/update_produit/' . $produit['id_produit']) ?>" method="post">
                                     <div class="row">
                                         <div class="col-md-3"></div>
                                         <div class="col-md-8 form-group mb-3">
-                                            <div class="col-md-8 form-group mb-3">
-                                                <label for="firstName1">Nom du produit</label>
-                                                <input class="form-control" id="nom" name="nom" type="text" placeholder="Enter your first name" />
-                                            </div>
-                                            <div class="col-md-8 form-group mb-3">
-                                                <label for="lastName1">Description</label>
-                                                <input class="form-control" id="lastName1" type="text" placeholder="Enter your last name" />
-                                            </div>
-                                            <div class="col-md-8 form-group mb-3">
-                                                <label for="exampleInputEmail1">Quantité</label>
-                                                <input class="form-control" id="exampleInputEmail1" type="email" placeholder="Enter email" />
-                                                <!--  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
-                                            </div>
-                                            <div class="col-md-8 form-group mb-3">
-                                                <label for="phone">Seuil alerte</label>
-                                                <input class="form-control" id="phone" placeholder="Enter phone" />
-                                            </div>
-
-                                            <div class="col-md-8 form-group mb-3">
-                                                <label for="phone">Categorie</label>
-                                                <input class="form-control" id="phone" placeholder="Enter phone" />
-                                            </div>
-                                            
-                                            <div class="col-md-8" style="text-align: center;">
-                                                <button class="col-md-6 btn btn-primary">Submit</button>
-                                            </div>
+                                        <div class="col-md-8 form-group mb-3">
+                                            <label for="nom">Nom du produit</label>
+                                            <input class="form-control" id="nom" name="nomProduit" type="text" value="<?= esc($produit['nom_produit']) ?>" placeholder="Nom du produit" />
+                                        </div>
+                                        <div class="col-md-8 form-group mb-3">
+                                            <label for="description">Description</label>
+                                            <input class="form-control" id="description" name="description" type="text" value="<?= esc($produit['description']) ?>" placeholder="Description" />
+                                        </div>
+                                        <div class="col-md-8 form-group mb-3">
+                                            <label for="quantite">Quantité</label>
+                                            <input class="form-control" id="quantite" name="quantite" type="number" value="<?= esc($produit['quantite_stock']) ?>" placeholder="Quantité" />
+                                        </div>
+                                        <div class="col-md-8 form-group mb-3">
+                                            <label for="seuil_alerte">Seuil alerte</label>
+                                            <input class="form-control" id="seuil_alerte" name="seuil_alerte" type="number" value="<?= esc($produit['seuil_alerte']) ?>" placeholder="Seuil d'alerte" />
+                                        </div>
+                                        <div class="col-md-8 form-group mb-3">
+                                            <label for="categorie">Catégorie</label>
+                                            <select class="form-control" id="categorie" name="categorie">
+                                                <?php foreach ($categories as $categorie): ?>
+                                                    <option value="<?= esc($categorie['id_categorie']) ?>" <?= $categorie['id_categorie'] == $produit['id_categorie'] ? 'selected' : '' ?>>
+                                                        <?= esc($categorie['nom_categorie']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-8" style="text-align: center;">
+                                            <button class="col-md-6 btn btn-primary" type="submit">Modifier</button>
+                                        </div>
                                         </div>
                                         <div class="col-md-2"></div>
                                         

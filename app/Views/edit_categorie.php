@@ -15,36 +15,31 @@
                 <div class="col-md-12">
                         <div class="card mb-4">
                             <div class="card-body">
-                                <div class="card-title mb-3">Modifier une caterogie</div>
-                                <form>
+                                <div class="card-title mb-3">Modifier une categorie</div>
+                                <form method="post" action="<?= base_url('/update_categorie/' . $categorie['id_categorie']) ?>">
+                                <?php if (session()->getFlashdata('success')): ?>
+                                    <div class="alert alert-success">
+                                        <?= session()->getFlashdata('success') ?>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if (session()->getFlashdata('error')): ?>
+                                    <div class="alert alert-danger">
+                                        <?= session()->getFlashdata('error') ?>
+                                    </div>
+                                <?php endif; ?>
                                     <div class="row">
                                         <div class="col-md-3"></div>
                                         <div class="col-md-8 form-group mb-3">
+                                         
                                             <div class="col-md-8 form-group mb-3">
-                                                <label for="firstName1">Nom du produit</label>
-                                                <input class="form-control" id="nom" name="nom" type="text" placeholder="Enter your first name" />
-                                            </div>
-                                            <div class="col-md-8 form-group mb-3">
-                                                <label for="lastName1">Description</label>
-                                                <input class="form-control" id="lastName1" type="text" placeholder="Enter your last name" />
-                                            </div>
-                                            <div class="col-md-8 form-group mb-3">
-                                                <label for="exampleInputEmail1">Quantité</label>
-                                                <input class="form-control" id="exampleInputEmail1" type="email" placeholder="Enter email" />
-                                                <!--  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
-                                            </div>
-                                            <div class="col-md-8 form-group mb-3">
-                                                <label for="phone">Seuil alerte</label>
-                                                <input class="form-control" id="phone" placeholder="Enter phone" />
-                                            </div>
-
-                                            <div class="col-md-8 form-group mb-3">
-                                                <label for="phone">Categorie</label>
-                                                <input class="form-control" id="phone" placeholder="Enter phone" />
+                                                    <label for="nom_categorie">Nom de la catégorie</label>
+                                                    <input class="form-control" id="nom_categorie" name="nom_categorie" type="text" value="<?= esc($categorie['nom_categorie']) ?>" placeholder="Entrez le nom de la catégorie" />
                                             </div>
                                             
+                                            
                                             <div class="col-md-8" style="text-align: center;">
-                                                <button class="col-md-6 btn btn-primary">Submit</button>
+                                                <button class="col-md-6 btn btn-primary">Enregistrer</button>
                                             </div>
                                         </div>
                                         <div class="col-md-2"></div>

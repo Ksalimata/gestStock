@@ -21,6 +21,17 @@
             <div class="card text-left">
                 <div class="card-body">
                     <h4 class="card-title mb-3">Liste des catégories</h4>
+                    <?php if (session()->getFlashdata('success')): ?>
+                        <div class="alert alert-success">
+                            <?= session()->getFlashdata('success') ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (session()->getFlashdata('error')): ?>
+                        <div class="alert alert-danger">
+                            <?= session()->getFlashdata('error') ?>
+                        </div>
+                    <?php endif; ?>
                     <div class="table-responsive">
                         <table class="display table table-striped table-bordered" id="zero_configuration_table" style="width:100%">
                             <thead>
@@ -37,8 +48,8 @@
                                             <td><?= esc($categorie['id_categorie']) ?></td>
                                             <td><?= esc($categorie['nom_categorie']) ?></td>
                                             <td>
-                                                <a href="<?= site_url('categorie/edit/' . $categorie['id_categorie']) ?>" class="btn btn-primary btn-sm">Modifier</a>
-                                                <a href="<?= site_url('categorie/delete/' . $categorie['id_categorie']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?');">Supprimer</a>
+                                                <a href="<?= site_url('edit_categorie/' . $categorie['id_categorie']) ?>" class="btn btn-primary btn-sm">Modifier</a>
+                                                <a href="<?= site_url('delete_categorie/' . $categorie['id_categorie']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?');">Supprimer</a>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>

@@ -62,8 +62,6 @@ class AuthController extends BaseController
     {
         $validation = \Config\Services::validation();
 
-       
-
         $rules = [
             'nom' => 'required',
             'prenoms' => 'required',
@@ -91,10 +89,6 @@ class AuthController extends BaseController
 
         return redirect()->to('/login')->with('message', 'Inscription réussie. Vous pouvez vous connecter.');
     }
-
-
-
-
 
     public function logout()
     {

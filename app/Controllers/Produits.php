@@ -8,11 +8,13 @@ class Produits extends BaseController
 {
     public function index(): string
     {
+        $this->checkSession(); // Vérification de la session
         return $this->get_all_produits();
     }
 
     public function add_produit(): string
     {
+        $this->checkSession(); // Vérification de la session
         // Récupérer toutes les catégories pour les afficher dans la vue
         $categorieModel = new CategorieModel();
         $categories = $categorieModel->findAll();
@@ -22,6 +24,7 @@ class Produits extends BaseController
 
     public function create_produit()
     {
+        $this->checkSession(); // Vérification de la session
         $produit = $this->request->getPost('nomProduit');
         $description = $this->request->getPost('description');
         $quantite = $this->request->getPost('quantite');
@@ -52,8 +55,28 @@ class Produits extends BaseController
         }
     }
 
-    public function edit_produit($id)
+    public function edit_produit($id): string
     {
+        $this->checkSession(); // Vérification de la session
+        $produitModel = new ProduitsModel();
+        $categorieModel = new CategorieModel();
+
+        // Récupérer le produit à modifier
+        $produit = $produitModel->find($id);
+
+        if (!$produit) {
+            return redirect()->to('/produit')->with('error', 'Produit introuvable.');
+        }
+
+        // Récupérer toutes les catégories pour les afficher dans la vue
+        $categories = $categorieModel->findAll();
+
+        return view('edit_produit', ['produit' => $produit, 'categories' => $categories]);
+    }
+
+    public function update_produit($id)
+    {
+        $this->checkSession(); // Vérification de la session
         $produitModel = new ProduitsModel();
         $categorieModel = new CategorieModel();
 
@@ -63,12 +86,13 @@ class Produits extends BaseController
         // Récupérer toutes les catégories pour les afficher dans la vue
         $categories = $categorieModel->findAll();
 
-        if ($this->request->getMethod() === 'post') {
+        if ($this->request->getMethod() === 'POST') {
             $produit = $this->request->getPost('nomProduit');
             $description = $this->request->getPost('description');
             $quantite = $this->request->getPost('quantite');
             $seuil_alerte = $this->request->getPost('seuil_alerte');
             $categorie = $this->request->getPost('categorie');
+           // var_dump($produit, $description, $quantite, $seuil_alerte, $categorie);die();
 
             // Validation
             if (empty($produit) || empty($description) || empty($quantite) || empty($seuil_alerte) || empty($categorie)) {
@@ -92,7 +116,16 @@ class Produits extends BaseController
 
     public function delete_produit($id)
     {
+        $this->checkSession(); // Vérification de la session
         $model = new ProduitsModel();
+
+        // Vérifier si le produit existe
+        $produit = $model->find($id);
+        if (!$produit) {
+            return redirect()->to('/produit')->with('error', 'Produit introuvable.');
+        }
+//var_dump($produit);die();
+        // Supprimer le produit
         $model->delete($id);
 
         return redirect()->to('/produit')->with('success', 'Produit supprimé avec succès.');
@@ -101,7 +134,7 @@ class Produits extends BaseController
     public function get_all_produits()
     {
         
-
+        $this->checkSession(); // Vérification de la session
         $produitsModel = new \App\Models\ProduitsModel();
         $produits = $produitsModel
             ->select('produit.*, categorie.nom_categorie')

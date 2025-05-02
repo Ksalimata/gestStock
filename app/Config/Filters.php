@@ -104,5 +104,7 @@ class Filters extends BaseFilters
      *
      * @var array<string, array<string, list<string>>>
      */
-    public array $filters = [];
+    public array $filters = [
+        'auth' => ['before' => ['produits/*', 'categorie/*',  'mouvement/*']], // Appliquer le filtre aux routes spécifiques
+    ];
 }

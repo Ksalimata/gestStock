@@ -55,4 +55,11 @@ abstract class BaseController extends Controller
 
         // E.g.: $this->session = service('session');
     }
+
+    protected function checkSession()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/login')->with('error', 'Vous devez être connecté pour accéder à cette page.');
+        }
+    }
 }

@@ -25,13 +25,12 @@
                             <img src="<?= base_url('assets/images/faces/1.jpg')?>" id="userDropdown" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                 <div class="dropdown-header">
-                                    <i class="i-Lock-User mr-1"></i> Timothy Carlson
+                                    <i class="i-Lock-User mr-1"></i> <?= session()->get('nom').' '.session()->get('prenoms') ?? 'Utilisateur' ?>
                                 </div>
-                                <a class="dropdown-item">Account settings</a>
-                                <a class="dropdown-item">Billing history</a>
-                                <a class="dropdown-item" href="signin.html">Sign out</a>
+                                <a class="dropdown-item" href="<?= base_url('/logout') ?>">Se déconnecter</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+

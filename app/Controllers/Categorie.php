@@ -1,20 +1,26 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\ProduitsModel;
+use App\Models\CategorieModel;
+
 class Categorie extends BaseController
 {
     public function index(): string
     {
+        $this->checkSession(); // Vérification de la session
         return $this->get_all_categories();
     }
 
     public function add_categorie(): string
     {
+        $this->checkSession(); // Vérification de la session
         return view('add_categorie');
     }
 
     public function create_categorie()
     {
+        $this->checkSession(); // Vérification de la session
         $categorie = $this->request->getPost('nom_categorie');
 
         // Validation
@@ -23,7 +29,7 @@ class Categorie extends BaseController
         }
 
         // Vérification si la catégorie existe déjà
-        $model = new \App\Models\CategorieModel();
+        $model = new CategorieModel();
         $existingCategorie = $model->where('nom_categorie', $categorie)->first();
 
         if ($existingCategorie) {
@@ -44,19 +50,37 @@ class Categorie extends BaseController
     
     public function delete_categorie($id)
     {
-        $model = new \App\Models\CategorieModel();
+        $this->checkSession(); // Vérification de la session
+        $model = new CategorieModel();
         $model->delete($id);
 
         return redirect()->to('/categorie')->with('success', 'Catégorie supprimée avec succès.');
     }
 
-    public function edit_categorie($id)
+    public function edit_categorie($id): string
     {
-        $model = new \App\Models\CategorieModel();
+        $this->checkSession(); // Vérification de la session
+        $model = new CategorieModel();
+
+        // Récupérer la catégorie à modifier
+        $categorie = $model->find($id);
+    
+        if (!$categorie) {
+            return redirect()->to('/categorie')->with('error', 'Catégorie introuvable.');
+        }
+    
+        // Passer les données de la catégorie à la vue
+        return view('edit_categorie', ['categorie' => $categorie]);
+    }
+
+    public function update_categorie($id)
+    {
+        $this->checkSession(); // Vérification de la session
+        $model = new CategorieModel();
         $categorie = $model->find($id);
 
-        if ($this->request->getMethod() === 'post') {
-            $categorie = $this->request->getPost('categorie');
+        if ($this->request->getMethod() === 'POST') {
+            $categorie = $this->request->getPost('nom_categorie');
 
             // Validation
             if (empty($categorie)) {
@@ -76,7 +100,8 @@ class Categorie extends BaseController
 
     public function get_categorie($id)
     {
-        $model = new \App\Models\CategorieModel();
+        $this->checkSession(); // Vérification de la session
+        $model = new CategorieModel();
         $categorie = $model->find($id);
 
         return view('edit_categorie', ['categorie' => $categorie]);
@@ -84,7 +109,8 @@ class Categorie extends BaseController
 
     public function get_all_categories()
     {
-        $model = new \App\Models\CategorieModel();
+        $this->checkSession(); // Vérification de la session
+        $model = new CategorieModel();
         $categories = $model->findAll();
 
         return view('categorie', ['categories' => $categories]);
