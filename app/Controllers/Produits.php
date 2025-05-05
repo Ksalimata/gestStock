@@ -124,8 +124,6 @@ class Produits extends BaseController
         if (!$produit) {
             return redirect()->to('/produit')->with('error', 'Produit introuvable.');
         }
-//var_dump($produit);die();
-        // Supprimer le produit
         $model->delete($id);
 
         return redirect()->to('/produit')->with('success', 'Produit supprimé avec succès.');
@@ -142,5 +140,102 @@ class Produits extends BaseController
             ->findAll();
 
         return view('produits', ['produits' => $produits]);
+    }
+
+    public function add_sortie_stock(): string
+    {
+        $this->checkSession(); // Vérification de la session
+
+        // Récupérer tous les produits pour les afficher dans le formulaire
+        $produitsModel = new ProduitsModel();
+        $produits = $produitsModel->findAll();
+
+        return view('add_sortie_stock', ['produits' => $produits]);
+    }
+
+    public function create_sortie_stock()
+    {
+            $this->checkSession(); // Vérification de la session
+
+            $id_produit = $this->request->getPost('id_produit');
+            $quantite = $this->request->getPost('quantite');
+
+            // Validation
+            if (empty($id_produit) || empty($quantite) || $quantite <= 0) {
+                return redirect()->back()->with('error', 'Tous les champs sont obligatoires et la quantité doit être supérieure à 0.');
+            }
+
+            $produitsModel = new ProduitsModel();
+            $sortieStockModel = new SortieStockModel();
+
+            // Vérifier si le produit existe
+            $produit = $produitsModel->find($id_produit);
+            if (!$produit) {
+                return redirect()->back()->with('error', 'Produit introuvable.');
+            }
+
+            // Vérifier si la quantité en stock est suffisante
+            if ($produit['quantite_stock'] < $quantite) {
+                return redirect()->back()->with('error', 'Stock insuffisant pour effectuer cette sortie.');
+            }
+
+            // Enregistrer la sortie de stock
+            $sortieStockModel->save([
+                'id_produit' => $id_produit,
+                'quantite' => $quantite,
+            ]);
+
+            // Mettre à jour la quantité dans la table produits
+            $produitsModel->update($id_produit, [
+                'quantite_stock' => $produit['quantite_stock'] - $quantite,
+            ]);
+
+            return redirect()->to('/produit')->with('success', 'Sortie de stock enregistrée avec succès.');
+    }
+
+    public function add_entree_stock(): string
+    {
+        $this->checkSession(); // Vérification de la session
+
+        // Récupérer tous les produits pour les afficher dans le formulaire
+        $produitsModel = new ProduitsModel();
+        $produits = $produitsModel->findAll();
+
+        return view('add_entree_stock', ['produits' => $produits]);
+    }
+
+    public function create_entree_stock()
+    {
+        $this->checkSession(); // Vérification de la session
+
+        $id_produit = $this->request->getPost('id_produit');
+        $quantite = $this->request->getPost('quantite');
+
+        // Validation
+        if (empty($id_produit) || empty($quantite) || $quantite <= 0) {
+            return redirect()->back()->with('error', 'Tous les champs sont obligatoires et la quantité doit être supérieure à 0.');
+        }
+
+        $produitsModel = new ProduitsModel();
+        $entreeStockModel = new EntreeStockModel();
+
+        // Vérifier si le produit existe
+        $produit = $produitsModel->find($id_produit);
+        if (!$produit) {
+            return redirect()->back()->with('error', 'Produit introuvable.');
+        }
+
+        // Enregistrer l'entrée de stock
+        $entreeStockModel->save([
+            'id_produit' => $id_produit,
+            'quantite' => $quantite,
+        ]);
+
+        // Mettre à jour la quantité dans la table produits
+        $produitsModel->update($id_produit, [
+            'quantite_stock' => $produit['quantite_stock'] + $quantite,
+        ]);
+
+        return redirect()->to('/produit')->with('success', 'Entrée de stock enregistrée avec succès.');
     }
 }
