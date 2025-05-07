@@ -52,15 +52,15 @@
                                 <?php if (!empty($users) && is_array($users)): ?>
                                     <?php foreach ($users as $user): ?>
                                         <tr>
-                                            <td><?= esc($user['id']) ?></td>
+                                            <td><?= esc($user['id_utilisateur']) ?></td>
                                             <td><?= esc($user['nom']) ?></td>
                                             <td><?= esc($user['prenoms']) ?></td>
                                             <td><?= esc($user['email']) ?></td>
                                             <td><?= esc($user['telephone']) ?></td>
                                             <td><?= esc($user['role']) ?></td>
                                             <td>
-                                                <a href="<?= site_url('edit_user/' . $user['id']) ?>" class="btn btn-primary btn-sm">Modifier</a>
-                                                <a href="<?= site_url('delete_user/' . $user['id']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">Supprimer</a>
+                                                <a href="<?= site_url('edit_user/' . $user['id_utilisateur']) ?>" class="btn btn-primary btn-sm">Modifier</a>
+                                                <a href="<?= site_url('delete_user/' . $user['id_utilisateur']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">Supprimer</a>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>

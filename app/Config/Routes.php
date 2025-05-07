@@ -53,3 +53,6 @@ $routes->post('/create_sortie_stock', 'Produits::create_sortie_stock');
 $routes->get('/add_entree_stock', 'Produits::add_entree_stock');
 $routes->post('/create_entree_stock', 'Produits::create_entree_stock');
 
+$routes->get('/rapport_stock', 'Produits::rapport_stock');
+$routes->get('/generate_rapport_stock', 'Produits::generate_rapport_stock');
+

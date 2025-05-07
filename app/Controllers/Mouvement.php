@@ -1,20 +1,69 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\ProduitsModel;
+use App\Models\CategorieModel;
+use App\Models\EntreeStockModel;
+use App\Models\SortieStockModel;
+
 class Mouvement extends BaseController
 {
     public function index(): string
     {
-        return view('mouvement');
+        $this->checkSession(); // Vérification de la session
+
+        $produitsModel = new ProduitsModel();
+        $entreeStockModel = new EntreeStockModel();
+        $sortieStockModel = new SortieStockModel();
+
+        // Récupérer les entrées de stock
+        $entrees = $entreeStockModel
+            ->select('entree_stock.quantite, entree_stock.date_entree as date, produit.nom_produit')
+            ->join('produit', 'produit.id_produit = entree_stock.id_produit')
+            ->findAll();
+
+        // Récupérer les sorties de stock
+        $sorties = $sortieStockModel
+            ->select('sortie_stock.quantite, sortie_stock.date_sortie as date, produit.nom_produit')
+            ->join('produit', 'produit.id_produit = sortie_stock.id_produit')
+            ->findAll();
+
+        // Fusionner les entrées et sorties
+        $mouvements = [];
+        foreach ($entrees as $entree) {
+            $mouvements[] = [
+                'type' => 'Entrée',
+                'nom_produit' => $entree['nom_produit'],
+                'quantite' => $entree['quantite'],
+                'date' => $entree['date'],
+            ];
+        }
+        foreach ($sorties as $sortie) {
+            $mouvements[] = [
+                'type' => 'Sortie',
+                'nom_produit' => $sortie['nom_produit'],
+                'quantite' => $sortie['quantite'],
+                'date' => $sortie['date'],
+            ];
+        }
+
+        // Trier les mouvements par date (optionnel)
+        usort($mouvements, function ($a, $b) {
+            return strtotime($b['date']) - strtotime($a['date']);
+        });
+
+        return view('mouvement', ['mouvements' => $mouvements]);
     }
 
     public function add_mouvement(): string
     {
+        $this->checkSession(); // Vérification de la session
         return view('add_mouvement');
     }
 
     public function create_mouvement()
     {
+        $this->checkSession(); // Vérification de la session
         $produit = $this->request->getPost('produit');
         $prix = $this->request->getPost('prix');
         $quantite = $this->request->getPost('quantite');
@@ -38,6 +87,7 @@ class Mouvement extends BaseController
     }
     public function delete_mouvement($id)
     {
+        $this->checkSession(); // Vérification de la session
         $model = new \App\Models\MouvementModel();
         $model->delete($id);
 
@@ -46,6 +96,7 @@ class Mouvement extends BaseController
 
     public function edit_mouvement($id)
     {
+        $this->checkSession(); // Vérification de la session
         $model = new \App\Models\MouvementModel();
         $mouvement = $model->find($id);
 
@@ -75,6 +126,7 @@ class Mouvement extends BaseController
     }
     public function get_mouvement()
     {
+        $this->checkSession(); // Vérification de la session
         $model = new \App\Models\MouvementModel();
         $mouvements = $model->findAll();
 
@@ -82,6 +134,7 @@ class Mouvement extends BaseController
     }
     public function get_all_mouvements()
     {
+        $this->checkSession(); // Vérification de la session
         $model = new \App\Models\MouvementModel();
         $mouvements = $model->findAll();
 
@@ -90,6 +143,7 @@ class Mouvement extends BaseController
     
     public function get_mouvement_by_id($id)
     {
+        $this->checkSession(); // Vérification de la session
         $model = new \App\Models\MouvementModel();
         $mouvement = $model->find($id);
 

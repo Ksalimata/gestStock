@@ -23,6 +23,7 @@ class Users extends BaseController
 
     public function create_user()
     {
+        $this->checkSession(); // Vérification de la session
             $nom = $this->request->getPost('nom');
             $prenom = $this->request->getPost('prenom');
             $email = $this->request->getPost('email');
@@ -43,20 +44,22 @@ class Users extends BaseController
                 'email' => $email,
                 'telephone' => $telephone,
                 'role' => $role,
-                'password' => hash('sha256', APP_SALT . $password), // Hachage du mot de passe
+                'password' => password_hash($password, PASSWORD_BCRYPT), // Utilisation de password_hash
             ]);
 
-            return redirect()->to('/users')->with('success', 'Utilisateur ajouté avec succès.');
+            return redirect()->to('/users')->with('success', 'Utilisateur "' . $nom . '" ajouté avec succès.');
 
     }
 
     public function delete_user($id)
     {
+        $this->checkSession(); // Vérification de la session
         $model = new UsersModel();
 
         // Vérifier si l'utilisateur existe
         $user = $model->find($id);
         if (!$user) {
+            log_message('error', 'Tentative de suppression d\'un utilisateur inexistant : ID ' . $id);
             return redirect()->to('/users')->with('error', 'Utilisateur introuvable.');
         }
 
@@ -68,6 +71,7 @@ class Users extends BaseController
 
     public function edit_user($id): string
     {
+        $this->checkSession(); // Vérification de la session
         $model = new UsersModel();
         $user = $model->find($id);
 
@@ -81,6 +85,7 @@ class Users extends BaseController
 
     public function update_user($id)
     {
+        $this->checkSession(); // Vérification de la session
         $model = new UsersModel();
         $user = $model->find($id);
     
@@ -95,7 +100,7 @@ class Users extends BaseController
             $telephone = $this->request->getPost('telephone');
             $role = $this->request->getPost('role');
             $password = $this->request->getPost('password');
-    
+
             // Validation
             if (empty($nom) || empty($prenom) || empty($email) || empty($telephone) || empty($role)) {
                 return redirect()->back()->with('error', 'Tous les champs sont obligatoires.');
@@ -112,7 +117,7 @@ class Users extends BaseController
     
             // Si un nouveau mot de passe est fourni, le hacher
             if (!empty($password)) {
-                $data['password'] = password_hash($password, PASSWORD_BCRYPT);
+                $data['password'] = password_hash($password, PASSWORD_BCRYPT); // Utilisation de password_hash
             }
     
             // Mise à jour dans la base de données
@@ -127,9 +132,12 @@ class Users extends BaseController
 
     public function view_user($id)
     {
+
         $model = new UsersModel();
         $user = $model->find($id);
 
-        return view('view_user', ['user' => $user]);
+        if (!$user) {
+            return redirect()->to('/users')->with('error', 'Utilisateur introuvable.');
+        }
     }
 }

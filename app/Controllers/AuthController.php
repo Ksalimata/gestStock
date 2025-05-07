@@ -14,6 +14,7 @@ class AuthController extends BaseController
 
     public function loginPost()
     {
+        $this->checkSession(); // Vérification de la session
         $session = session();
         $model = new UsersModel();
 
@@ -26,15 +27,13 @@ class AuthController extends BaseController
         }
 
         $user = $model->where('email', $email)->first();
-        
 
         if ($user) {
-            $hashSaisi = hash('sha256', APP_SALT . $password);
-
-            if ($hashSaisi === $user['mot_de_passe']) {
+           
+            if (password_verify($password, $user['mot_de_passe'])) {
                 // Connexion OK
                 $session->set([
-                    'id' => $user['id'],
+                    'id' => $user['id_utilisateur'],
                     'nom' => $user['nom'],
                     'prenoms' => $user['prenoms'],
                     'email' => $user['email'],
@@ -60,6 +59,7 @@ class AuthController extends BaseController
     
     public function enregistrer()
     {
+        
         $validation = \Config\Services::validation();
 
         $rules = [
@@ -83,7 +83,7 @@ class AuthController extends BaseController
             'prenoms' => $this->request->getPost('prenoms'),
             'email' => $this->request->getPost('email'),
             'telephone' => $this->request->getPost('telephone'),
-            'mot_de_passe' => hash('sha256', APP_SALT . $mot_de_passe)
+            'mot_de_passe' => password_hash($mot_de_passe, PASSWORD_BCRYPT) // Utilisation de password_hash
         ]);
 
 

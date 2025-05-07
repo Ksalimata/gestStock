@@ -6,6 +6,7 @@ use CodeIgniter\Model;
 class EntreeStockModel extends Model
 {
     protected $table = 'entree_stock';
-    protected $primaryKey = 'id';
-    protected $allowedFields = ['id_produit', 'quantite', 'date_entree'];
+    protected $primaryKey = 'id_entree';
+    protected $allowedFields = ['date_entree', 'quantite', 'id_produit', 'id_utilisateur'];
+
 }

@@ -16,7 +16,7 @@
                         <div class="card mb-4">
                             <div class="card-body">
                                 <div class="card-title mb-3">Modifier un utilisateur</div>
-                                <form action="<?= base_url('/update_user/' . $user['id']) ?>" method="post">
+                                <form action="<?= base_url('/update_user/' . $user['id_utilisateur']) ?>" method="post">
                                     <?php if (session()->getFlashdata('success')): ?>
                                         <div class="alert alert-success">
                                             <?= session()->getFlashdata('success') ?>

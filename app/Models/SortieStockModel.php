@@ -7,7 +7,7 @@ class SortieStockModel extends Model
 {
     protected $table = 'sortie_stock';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['id_produit', 'quantite', 'date_sortie'];
+    protected $allowedFields = ['id_produit','id_utilisateur', 'quantite', 'date_sortie'];
 }
 
 ?>

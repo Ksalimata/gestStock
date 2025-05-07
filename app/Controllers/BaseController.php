@@ -58,8 +58,13 @@ abstract class BaseController extends Controller
 
     protected function checkSession()
     {
+        // Vérifier si l'utilisateur est connecté
         if (!session()->get('isLoggedIn')) {
-            return redirect()->to('/login')->with('error', 'Vous devez être connecté pour accéder à cette page.');
+            // Rediriger vers la page de connexion avec un message d'erreur
+            return redirect()->to('/login')->with('error', 'Votre session a expiré. Veuillez vous reconnecter.');
         }
+
+        // Retourner true si la session est valide
+        return true;
     }
 }

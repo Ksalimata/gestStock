@@ -37,16 +37,25 @@ function isParentActive($segment, $values) {
                 </a>
                 <div class="triangle"></div>
             </li>
-            <li class="nav-item <?= isParentActive($uri->getSegment(1), ['mouvement', 'add_mouvement']) ?>" data-item="apps">
+            <li class="nav-item <?= isParentActive($uri->getSegment(1), ['add_entree_stock', 'add_sortie_stock','mouvement']) ?>" data-item="apps">
                 <a class="nav-item-hold" href="#">
-                    <i class="nav-icon i-Computer-Secure"></i>
+                    <i class="nav-icon i-Arrow-Down-in-Circle"></i>
                     <span class="nav-text">Mouvements (Entrées / Sorties)</span>
                 </a>
                 <div class="triangle"></div>
             </li>
+
+            <li class="nav-item <?= isParentActive($uri->getSegment(1), ['rapport_stock']) ?>" data-item="rapports">
+                <a class="nav-item-hold" href="#">
+                    <i class="nav-icon i-Bar-Chart"></i>
+                    <span class="nav-text">Rapport</span>
+                </a>
+                <div class="triangle"></div>
+            </li>
+
             <li class="nav-item <?= isParentActive($uri->getSegment(1), ['users', 'add_user']) ?>" data-item="forms">
                 <a class="nav-item-hold" href="#">
-                    <i class="nav-icon i-File-Clipboard-File--Text"></i>
+                    <i class="nav-icon i-Checked-User"></i>
                     <span class="nav-text">Utilisateurs</span>
                 </a>
                 <div class="triangle"></div>
@@ -92,7 +101,7 @@ function isParentActive($segment, $values) {
                 </li>
                 <li class="nav-item <?= isActive($uri->getSegment(1), 'add_produit') ?>">
                     <a href="<?= site_url('add_produit') ?>">
-                        <i class="nav-icon i-Split-Vertical"></i>
+                        <i class="nav-icon i-Add"></i>
                         <span class="item-name">Ajouter un produit</span>
                     </a>
                 </li>
@@ -108,13 +117,13 @@ function isParentActive($segment, $values) {
             <ul class="childNav">
                 <li class="nav-item <?= isActive($uri->getSegment(1), 'categorie') ?>">
                     <a href="<?= site_url('categorie') ?>">
-                        <i class="nav-icon i-Add-File"></i>
+                        <i class="nav-icon i-Folder"></i>
                         <span class="item-name">Liste des catégories</span>
                     </a>
                 </li>
                 <li class="nav-item <?= isActive($uri->getSegment(1), 'add_categorie') ?>">
                     <a href="<?= site_url('add_categorie') ?>">
-                        <i class="nav-icon i-Email"></i>
+                        <i class="nav-icon i-Add-File"></i>
                         <span class="item-name">Ajouter une catégorie</span>
                     </a>
                 </li>
@@ -122,22 +131,44 @@ function isParentActive($segment, $values) {
         </div>
 
         <!-- Submenu Mouvements -->
+
         <div class="submenu-area" data-parent="apps">
             <header>
                 <h6>Mouvements</h6>
                 <p>Gestion des entrées/sorties</p>
             </header>
             <ul class="childNav">
+                <li class="nav-item <?= isActive($uri->getSegment(1), 'add_entree_stock') ?>">
+                    <a href="<?= site_url('add_entree_stock') ?>">
+                        <i class="nav-icon i-Arrow-Down"></i>
+                        <span class="item-name">Ajouter une entrée</span>
+                    </a>
+                </li>
+                <li class="nav-item <?= isActive($uri->getSegment(1), 'add_sortie_stock') ?>">
+                    <a href="<?= site_url('add_sortie_stock') ?>">
+                        <i class="nav-icon i-Arrow-Up"></i>
+                        <span class="item-name">Ajouter une sortie</span>
+                    </a>
+                </li>
                 <li class="nav-item <?= isActive($uri->getSegment(1), 'mouvement') ?>">
                     <a href="<?= site_url('mouvement') ?>">
-                        <i class="nav-icon i-Crop-2"></i>
+                        <i class="nav-icon i-File-Horizontal-Text"></i>
                         <span class="item-name">Liste des mouvements</span>
                     </a>
                 </li>
-                <li class="nav-item <?= isActive($uri->getSegment(1), 'add_mouvement') ?>">
-                    <a href="<?= site_url('add_mouvement') ?>">
-                        <i class="nav-icon i-Loading-3"></i>
-                        <span class="item-name">Ajouter des mouvements</span>
+            </ul>
+        </div>
+
+        <div class="submenu-area" data-parent="rapports">
+            <header>
+                <h6>Rapports</h6>
+                <p>Analyse des stocks</p>
+            </header>
+            <ul class="childNav">
+                <li class="nav-item <?= isActive($uri->getSegment(1), 'rapport_stock') ?>">
+                    <a href="<?= site_url('rapport_stock') ?>">
+                        <i class="nav-icon i-Bar-Chart"></i>
+                        <span class="item-name">Rapport de stock</span>
                     </a>
                 </li>
             </ul>
@@ -152,13 +183,13 @@ function isParentActive($segment, $values) {
             <ul class="childNav">
                 <li class="nav-item <?= isActive($uri->getSegment(1), 'users') ?>">
                     <a href="<?= site_url('users') ?>">
-                        <i class="nav-icon i-Split-Horizontal-2-Window"></i>
+                        <i class="nav-icon i-Checked-User"></i>
                         <span class="item-name">Liste des utilisateurs</span>
                     </a>
                 </li>
                 <li class="nav-item <?= isActive($uri->getSegment(1), 'add_user') ?>">
                     <a href="<?= site_url('add_user') ?>">
-                        <i class="nav-icon i-Bell1"></i>
+                        <i class="nav-icon i-Add-User"></i>
                         <span class="item-name">Ajouter un utilisateur</span>
                     </a>
                 </li>
@@ -175,19 +206,19 @@ function isParentActive($segment, $values) {
                 <li class="nav-item <?= isActive($uri->getSegment(1), 'signin') ?>">
                     <a href="../sessions/signin.html">
                         <i class="nav-icon i-Checked-User"></i>
-                        <span class="item-name">Sign in</span>
+                        <span class="item-name">Connexion</span>
                     </a>
                 </li>
                 <li class="nav-item <?= isActive($uri->getSegment(1), 'signup') ?>">
                     <a href="../sessions/signup.html">
                         <i class="nav-icon i-Add-User"></i>
-                        <span class="item-name">Sign up</span>
+                        <span class="item-name">Créer un compte</span>
                     </a>
                 </li>
                 <li class="nav-item <?= isActive($uri->getSegment(1), 'forgot') ?>">
                     <a href="../sessions/forgot.html">
                         <i class="nav-icon i-Find-User"></i>
-                        <span class="item-name">Forgot</span>
+                        <span class="item-name">Mot de passe oublié</span>
                     </a>
                 </li>
             </ul>

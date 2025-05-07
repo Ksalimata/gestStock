@@ -79,6 +79,10 @@ class Categorie extends BaseController
         $model = new CategorieModel();
         $categorie = $model->find($id);
 
+        if (!$categorie) {
+            return redirect()->to('/categorie')->with('error', 'Catégorie introuvable.');
+        }
+
         if ($this->request->getMethod() === 'POST') {
             $categorie = $this->request->getPost('nom_categorie');
 
@@ -98,14 +102,6 @@ class Categorie extends BaseController
         return view('edit_categorie', ['categorie' => $categorie]);
     }
 
-    public function get_categorie($id)
-    {
-        $this->checkSession(); // Vérification de la session
-        $model = new CategorieModel();
-        $categorie = $model->find($id);
-
-        return view('edit_categorie', ['categorie' => $categorie]);
-    }
 
     public function get_all_categories()
     {
