@@ -1,214 +1,172 @@
 <?= $this->extend('layout/template') ?>
 
 <?= $this->section('content') ?>
-    <div class="main-content">
-                <div class="breadcrumb">
-                    <h1 class="mr-2">Version 1</h1>
+<div class="main-content">
+    <div class="breadcrumb">
+        <h1 class="mr-2">Dashboard</h1>
+        <ul>
+            <li><a href="">Home</a></li>
+            <li>Dashboard</li>
+        </ul>
+    </div>
+    <div class="separator-breadcrumb border-top"></div>
+
+    <!-- Statistiques principales -->
+    <div class="row">
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                <div class="card-body text-center">
+                    <i class="i-Box-Full"></i>
+                    <div class="content">
+                        <p class="text-muted mt-2 mb-0">Total Produits</p>
+                        <p class="text-primary text-24 line-height-1 mb-2"><?= $totalProduits ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-icon-bg card-icon-bg-warning o-hidden mb-4">
+                <div class="card-body text-center">
+                    <i class="i-Remove-Basket"></i>
+                    <div class="content">
+                        <p class="text-muted mt-2 mb-0">Produits Critiques</p>
+                        <p class="text-warning text-24 line-height-1 mb-2"><?= count($produitsCritiques) ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-icon-bg card-icon-bg-success o-hidden mb-4">
+                <div class="card-body text-center">
+                    <i class="i-Add"></i>
+                    <div class="content">
+                        <p class="text-muted mt-2 mb-0">Total Entrées</p>
+                        <p class="text-success text-24 line-height-1 mb-2"><?= $totalEntrees ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-icon-bg card-icon-bg-danger o-hidden mb-4">
+                <div class="card-body text-center">
+                    <i class="i-Remove"></i>
+                    <div class="content">
+                        <p class="text-muted mt-2 mb-0">Total Sorties</p>
+                        <p class="text-danger text-24 line-height-1 mb-2"><?= $totalSorties ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Produits en stock critique -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Produits en Stock Critique</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nom du Produit</th>
+                                    <th>Quantité Actuelle</th>
+                                    <th>Seuil d'Alerte</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($produitsCritiques as $index => $produit): ?>
+                                    <tr>
+                                        <td><?= $index + 1 ?></td>
+                                        <td><?= $produit['nom_produit'] ?></td>
+                                        <td><?= $produit['quantite_stock'] ?></td>
+                                        <td><?= $produit['seuil_alerte'] ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                <?php if (empty($produitsCritiques)): ?>
+                                    <tr>
+                                        <td colspan="4" class="text-center">Aucun produit en stock critique.</td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Historique des mouvements -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Historique des Mouvements</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Type</th>
+                                    <th>Produit</th>
+                                    <th>Quantité</th>
+                                    <th>Date</th>
+                                    <th>Utilisateur</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($mouvementsRecents as $index => $mouvement): ?>
+                                    <tr>
+                                        <td><?= $index + 1 ?></td>
+                                        <td><?= $mouvement['type'] ?></td>
+                                        <td><?= $mouvement['nom_produit'] ?></td>
+                                        <td><?= $mouvement['quantite'] ?></td>
+                                        <td><?= $mouvement['date'] ?></td>
+                                        <td><?= $mouvement['utilisateur'] ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                <?php if (empty($mouvementsRecents)): ?>
+                                    <tr>
+                                        <td colspan="6" class="text-center">Aucun mouvement récent.</td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alertes et Notifications -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Alertes et Notifications</h5>
                     <ul>
-                        <li><a href="">Dashboard</a></li>
-                        <li>Version 1</li>
+                        <?php if (empty($produitsCritiques)): ?>
+                            <li>Aucune alerte pour les produits critiques.</li>
+                        <?php else: ?>
+                            <li><?= count($produitsCritiques) ?> produit(s) en stock critique.</li>
+                        <?php endif; ?>
+
+                        <?php if (empty($produitsRupture)): ?>
+                            <li>Aucun produit en rupture de stock.</li>
+                        <?php else: ?>
+                            <li><?= count($produitsRupture) ?> produit(s) en rupture de stock.</li>
+                        <?php endif; ?>
+
+                        <?php if (empty($mouvementsRecents)): ?>
+                            <li>Aucun mouvement récent.</li>
+                        <?php else: ?>
+                            <li><?= count($mouvementsRecents) ?> mouvement(s) récent(s) enregistré(s).</li>
+                        <?php endif; ?>
                     </ul>
                 </div>
-                <div class="separator-breadcrumb border-top"></div>
-
-                <div class="row">
-                    <!-- ICON BG-->
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
-                            <div class="card-body text-center"><i class="i-Add-User"></i>
-                                <div class="content">
-                                    <p class="text-muted mt-2 mb-0">New Leads</p>
-                                    <p class="text-primary text-24 line-height-1 mb-2">205</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
-                            <div class="card-body text-center"><i class="i-Financial"></i>
-                                <div class="content">
-                                    <p class="text-muted mt-2 mb-0">Sales</p>
-                                    <p class="text-primary text-24 line-height-1 mb-2">$4021</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
-                            <div class="card-body text-center"><i class="i-Checkout-Basket"></i>
-                                <div class="content">
-                                    <p class="text-muted mt-2 mb-0">Orders</p>
-                                    <p class="text-primary text-24 line-height-1 mb-2">80</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
-                            <div class="card-body text-center"><i class="i-Money-2"></i>
-                                <div class="content">
-                                    <p class="text-muted mt-2 mb-0">Expense</p>
-                                    <p class="text-primary text-24 line-height-1 mb-2">$1200</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-8 col-md-12">
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <div class="card-title">This Year Sales</div>
-                                <div id="echartBar" style="height: 300px;"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-12">
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <div class="card-title">Sales by Countries</div>
-                                <div id="echartPie" style="height: 300px;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 col-md-12">
-                        
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card o-hidden mb-4">
-                                    <div class="card-header d-flex align-items-center border-0">
-                                        <h3 class="w-50 float-left card-title m-0">New Users</h3>
-                                        <div class="dropdown dropleft text-right w-50 float-right">
-                                            <button class="btn bg-gray-100" id="dropdownMenuButton1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="nav-icon i-Gear-2"></i></button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1"><a class="dropdown-item" href="#">Add new user</a><a class="dropdown-item" href="#">View All users</a><a class="dropdown-item" href="#">Something else here</a></div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="table-responsive">
-                                            <table class="table text-center" id="user_table">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">#</th>
-                                                        <th scope="col">Name</th>
-                                                        <th scope="col">Avatar</th>
-                                                        <th scope="col">Email</th>
-                                                        <th scope="col">Status</th>
-                                                        <th scope="col">Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <th scope="row">1</th>
-                                                        <td>Smith Doe</td>
-                                                        <td><img class="rounded-circle m-0 avatar-sm-table" src="<?= base_url('assets/images/faces/1.jpg')?>" alt="" /></td>
-                                                        <td>Smith@gmail.com</td>
-                                                        <td><span class="badge badge-success">Active</span></td>
-                                                        <td><a class="text-success mr-2" href="#"><i class="nav-icon i-Pen-2 font-weight-bold"></i></a><a class="text-danger mr-2" href="#"><i class="nav-icon i-Close-Window font-weight-bold"></i></a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">2</th>
-                                                        <td>Jhon Doe</td>
-                                                        <td><img class="rounded-circle m-0 avatar-sm-table" src="<?= base_url('assets/images/faces/1.jpg')?>" alt="" /></td>
-                                                        <td>Jhon@gmail.com</td>
-                                                        <td><span class="badge badge-info">Pending</span></td>
-                                                        <td><a class="text-success mr-2" href="#"><i class="nav-icon i-Pen-2 font-weight-bold"></i></a><a class="text-danger mr-2" href="#"><i class="nav-icon i-Close-Window font-weight-bold"></i></a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">3</th>
-                                                        <td>Alex</td>
-                                                        <td><img class="rounded-circle m-0 avatar-sm-table" src="<?= base_url('assets/images/faces/1.jpg')?>" alt="" /></td>
-                                                        <td>Otto@gmail.com</td>
-                                                        <td><span class="badge badge-warning">Not Active</span></td>
-                                                        <td><a class="text-success mr-2" href="#"><i class="nav-icon i-Pen-2 font-weight-bold"></i></a><a class="text-danger mr-2" href="#"><i class="nav-icon i-Close-Window font-weight-bold"></i></a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">4</th>
-                                                        <td>Mathew Doe</td>
-                                                        <td><img class="rounded-circle m-0 avatar-sm-table" src="<?= base_url('assets/images/faces/1.jpg')?>" alt="" /></td>
-                                                        <td>Mathew@gmail.com</td>
-                                                        <td><span class="badge badge-success">Active</span></td>
-                                                        <td><a class="text-success mr-2" href="#"><i class="nav-icon i-Pen-2 font-weight-bold"></i></a><a class="text-danger mr-2" href="#"><i class="nav-icon i-Close-Window font-weight-bold"></i></a></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12">
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <div class="card-title">Top Selling Products</div>
-                                <div class="d-flex flex-column flex-sm-row align-items-sm-center mb-3"><img class="avatar-lg mb-3 mb-sm-0 rounded mr-sm-3" src="<?= base_url('assets/images/products/headphone-4.jpg')?>" alt="" />
-                                    <div class="flex-grow-1">
-                                        <h5><a href="">Wireless Headphone E23</a></h5>
-                                        <p class="m-0 text-small text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                                        <p class="text-small text-danger m-0">$450
-                                            <del class="text-muted">$500</del>
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-outline-primary mt-3 mb-3 m-sm-0 btn-rounded btn-sm">
-                                            View
-                                            details
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-column flex-sm-row align-items-sm-center mb-3"><img class="avatar-lg mb-3 mb-sm-0 rounded mr-sm-3" src="<?= base_url('assets/images/products/headphone-2.jpg')?>" alt="" />
-                                    <div class="flex-grow-1">
-                                        <h5><a href="">Wireless Headphone Y902</a></h5>
-                                        <p class="m-0 text-small text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                                        <p class="text-small text-danger m-0">$550
-                                            <del class="text-muted">$600</del>
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-outline-primary mt-3 mb-3 m-sm-0 btn-sm btn-rounded">
-                                            View
-                                            details
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-column flex-sm-row align-items-sm-center mb-3"><img class="avatar-lg mb-3 mb-sm-0 rounded mr-sm-3" src=".<?= base_url('assets/images/products/headphone-3.jpg')?>" alt="" />
-                                    <div class="flex-grow-1">
-                                        <h5><a href="">Wireless Headphone E09</a></h5>
-                                        <p class="m-0 text-small text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                                        <p class="text-small text-danger m-0">$250
-                                            <del class="text-muted">$300</del>
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-outline-primary mt-3 mb-3 m-sm-0 btn-sm btn-rounded">
-                                            View
-                                            details
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-column flex-sm-row align-items-sm-center mb-3"><img class="avatar-lg mb-3 mb-sm-0 rounded mr-sm-3" src="<?= base_url('assets/images/products/headphone-4.jpg')?>" alt="" />
-                                    <div class="flex-grow-1">
-                                        <h5><a href="">Wireless Headphone X89</a></h5>
-                                        <p class="m-0 text-small text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                                        <p class="text-small text-danger m-0">$450
-                                            <del class="text-muted">$500</del>
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-outline-primary mt-3 mb-3 m-sm-0 btn-sm btn-rounded">
-                                            View
-                                            details
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                    
-                </div><!-- end of main-content -->
-                
+            </div>
+        </div>
     </div>
+</div>
 <?= $this->endSection() ?>

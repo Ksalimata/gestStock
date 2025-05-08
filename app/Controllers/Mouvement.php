@@ -10,7 +10,7 @@ class Mouvement extends BaseController
 {
     public function index(): string
     {
-        $this->checkSession(); // Vérification de la session
+        
 
         $produitsModel = new ProduitsModel();
         $entreeStockModel = new EntreeStockModel();
@@ -57,13 +57,13 @@ class Mouvement extends BaseController
 
     public function add_mouvement(): string
     {
-        $this->checkSession(); // Vérification de la session
+        
         return view('add_mouvement');
     }
 
     public function create_mouvement()
     {
-        $this->checkSession(); // Vérification de la session
+        
         $produit = $this->request->getPost('produit');
         $prix = $this->request->getPost('prix');
         $quantite = $this->request->getPost('quantite');
@@ -87,7 +87,7 @@ class Mouvement extends BaseController
     }
     public function delete_mouvement($id)
     {
-        $this->checkSession(); // Vérification de la session
+        
         $model = new \App\Models\MouvementModel();
         $model->delete($id);
 
@@ -96,7 +96,7 @@ class Mouvement extends BaseController
 
     public function edit_mouvement($id)
     {
-        $this->checkSession(); // Vérification de la session
+       
         $model = new \App\Models\MouvementModel();
         $mouvement = $model->find($id);
 
@@ -126,7 +126,7 @@ class Mouvement extends BaseController
     }
     public function get_mouvement()
     {
-        $this->checkSession(); // Vérification de la session
+        
         $model = new \App\Models\MouvementModel();
         $mouvements = $model->findAll();
 
@@ -134,7 +134,7 @@ class Mouvement extends BaseController
     }
     public function get_all_mouvements()
     {
-        $this->checkSession(); // Vérification de la session
+        
         $model = new \App\Models\MouvementModel();
         $mouvements = $model->findAll();
 
@@ -143,7 +143,7 @@ class Mouvement extends BaseController
     
     public function get_mouvement_by_id($id)
     {
-        $this->checkSession(); // Vérification de la session
+        
         $model = new \App\Models\MouvementModel();
         $mouvement = $model->find($id);
 

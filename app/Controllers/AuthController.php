@@ -14,7 +14,7 @@ class AuthController extends BaseController
 
     public function loginPost()
     {
-        $this->checkSession(); // Vérification de la session
+        
         $session = session();
         $model = new UsersModel();
 

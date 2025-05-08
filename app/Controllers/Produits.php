@@ -70,7 +70,7 @@ class Produits extends BaseController
 
     public function edit_produit($id): string
     {
-        $this->checkSession(); // Vérification de la session
+        
         $produitModel = new ProduitsModel();
         $categorieModel = new CategorieModel();
 
@@ -160,8 +160,6 @@ class Produits extends BaseController
 
     public function add_sortie_stock(): string
     {
-        
-
         // Récupérer tous les produits pour les afficher dans le formulaire
         $produitsModel = new ProduitsModel();
         $produits = $produitsModel->findAll();
@@ -172,7 +170,6 @@ class Produits extends BaseController
     public function create_sortie_stock()
     {
         
-
         $id_produit = $this->request->getPost('id_produit');
         $quantite = $this->request->getPost('quantite');
         $id_utilisateur = session()->get('id'); // Récupérer l'utilisateur connecté
@@ -217,7 +214,6 @@ class Produits extends BaseController
 
     public function add_entree_stock(): string
     {
-
         // Récupérer tous les produits pour les afficher dans le formulaire
         $produitsModel = new ProduitsModel();
         $produits = $produitsModel->findAll();
@@ -227,8 +223,7 @@ class Produits extends BaseController
 
     public function create_entree_stock()
     {
-        $this->checkSession();
-
+       
         $id_produit = $this->request->getPost('id_produit');
         $quantite = $this->request->getPost('quantite');
         $id_utilisateur = session()->get('id');
@@ -264,7 +259,6 @@ class Produits extends BaseController
 
     public function rapport_stock(): string
     {
-        
         // Récupérer tous les produits pour les afficher dans le formulaire
         $produitsModel = new ProduitsModel();
         $produits = $produitsModel->findAll();
@@ -274,8 +268,7 @@ class Produits extends BaseController
 
     public function generate_rapport_stock()
     {
-        $this->checkSession();
-
+        
         $id_produit = $this->request->getGet('id_produit');
         $date_debut = $this->request->getGet('date_debut');
         $date_fin = $this->request->getGet('date_fin');

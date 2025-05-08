@@ -8,12 +8,12 @@ class Auth implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
-        if (!session()->get('isLoggedIn')) {
-            return redirect()->to('/login')->with('error', 'Votre session a expiré. Veuillez vous reconnecter.');
+        $session = session();
+        if (!$session->get('isLoggedIn')) {
+            $session->setFlashdata('session_expired', 'Votre session a expiré, veuillez vous reconnecter.');
+            return redirect()->to('/login');
         }
     }
 
-    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
-    {
-    }
+    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null) {}
 }

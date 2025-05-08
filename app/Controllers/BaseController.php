@@ -56,15 +56,4 @@ abstract class BaseController extends Controller
         // E.g.: $this->session = service('session');
     }
 
-    protected function checkSession()
-    {
-        // Vérifier si l'utilisateur est connecté
-        if (!session()->get('isLoggedIn')) {
-            // Rediriger vers la page de connexion avec un message d'erreur
-            return redirect()->to('/login')->with('error', 'Votre session a expiré. Veuillez vous reconnecter.');
-        }
-
-        // Retourner true si la session est valide
-        return true;
-    }
 }

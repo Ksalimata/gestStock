@@ -23,7 +23,7 @@ class Users extends BaseController
 
     public function create_user()
     {
-        $this->checkSession(); // Vérification de la session
+        
             $nom = $this->request->getPost('nom');
             $prenom = $this->request->getPost('prenom');
             $email = $this->request->getPost('email');
@@ -53,7 +53,7 @@ class Users extends BaseController
 
     public function delete_user($id)
     {
-        $this->checkSession(); // Vérification de la session
+       
         $model = new UsersModel();
 
         // Vérifier si l'utilisateur existe
@@ -71,7 +71,7 @@ class Users extends BaseController
 
     public function edit_user($id): string
     {
-        $this->checkSession(); // Vérification de la session
+        
         $model = new UsersModel();
         $user = $model->find($id);
 
@@ -85,7 +85,7 @@ class Users extends BaseController
 
     public function update_user($id)
     {
-        $this->checkSession(); // Vérification de la session
+        
         $model = new UsersModel();
         $user = $model->find($id);
     

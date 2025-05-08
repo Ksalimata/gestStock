@@ -8,13 +8,13 @@ class Categorie extends BaseController
 {
     public function index(): string
     {
-        $this->checkSession(); // Vérification de la session
+        
         return $this->get_all_categories();
     }
 
     public function add_categorie(): string
     {
-        $this->checkSession(); // Vérification de la session
+        
         return view('add_categorie');
     }
 
@@ -75,7 +75,7 @@ class Categorie extends BaseController
 
     public function update_categorie($id)
     {
-        $this->checkSession(); // Vérification de la session
+        
         $model = new CategorieModel();
         $categorie = $model->find($id);
 
@@ -105,7 +105,7 @@ class Categorie extends BaseController
 
     public function get_all_categories()
     {
-        $this->checkSession(); // Vérification de la session
+        
         $model = new CategorieModel();
         $categories = $model->findAll();
 
