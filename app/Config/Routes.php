@@ -8,6 +8,7 @@ use CodeIgniter\Router\RouteCollection;
 
     // Routes publiques (hors du groupe dashboard)
     $routes->get('/login', 'AuthController::login');
+    $routes->get('/', 'AuthController::login');
     $routes->post('/login', 'AuthController::loginPost');
     $routes->get('/logout', 'AuthController::logout');
     $routes->get('/inscription', 'AuthController::inscription');

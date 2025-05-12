@@ -60,13 +60,13 @@ function isParentActive($segment, $values) {
                 </a>
                 <div class="triangle"></div>
             </li>
-            <li class="nav-item <?= isParentActive($uri->getSegment(1), ['signin', 'signup', 'forgot']) ?>" data-item="sessions">
+            <!-- <li class="nav-item //<?= isParentActive($uri->getSegment(1), ['signin', 'signup', 'forgot']) ?>" data-item="sessions">
                 <a class="nav-item-hold" href="#">
                     <i class="nav-icon i-Administrator"></i>
                     <span class="nav-text">Compte</span>
                 </a>
                 <div class="triangle"></div>
-            </li>
+            </li> -->
         </ul>
     </div>
     <div class="sidebar-left-secondary rtl-ps-none" data-perfect-scrollbar data-suppress-scroll-x="true">
@@ -197,7 +197,7 @@ function isParentActive($segment, $values) {
         </div>
 
         <!-- Submenu Compte -->
-        <div class="submenu-area" data-parent="sessions">
+        <!-- <div class="submenu-area" data-parent="sessions">
             <header>
                 <h6>Compte</h6>
                 <p>Gestion du profil</p>
@@ -222,7 +222,7 @@ function isParentActive($segment, $values) {
                     </a>
                 </li>
             </ul>
-        </div>
+        </div> -->
     </div>
 </div>
 
