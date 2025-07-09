@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\UsersModel;
+use App\Models\FournisseurModel;
 
 class Users extends BaseController
 {
@@ -139,5 +140,99 @@ class Users extends BaseController
         if (!$user) {
             return redirect()->to('/users')->with('error', 'Utilisateur introuvable.');
         }
+    }
+
+    public function listeFournisseur(): string
+    {
+        $model = new FournisseurModel();
+
+        // Récupérer tous les fournisseurs
+        $fournisseurs = $model->findAll();
+
+        // Passer les fournisseurs à la vue
+        return view('fournisseur', ['fournisseurs' => $fournisseurs]);
+    }
+
+    public function add_fournisseur(): string
+    {
+        return view('add_fournisseur');
+    }
+    public function create_fournisseur()
+    {
+        $nomFournisseur = $this->request->getPost('nomFournisseur');
+        $contact = $this->request->getPost('contact');
+        $adresse = $this->request->getPost('adresse');
+
+        // Validation
+        if (empty($nomFournisseur) || empty($contact) || empty($adresse)) {
+            return redirect()->back()->with('error', 'Tous les champs sont obligatoires.');
+        }
+
+        // Enregistrement dans la base de données
+        $model = new FournisseurModel();
+        $model->save([
+            'nom' => $nomFournisseur,
+            'contact' => $contact,
+            'adresse' => $adresse,
+        ]);
+
+        return redirect()->to('/fournisseur')->with('success', 'Fournisseur "' . $nomFournisseur . '" ajouté avec succès.');
+    }
+    public function edit_fournisseur($id): string
+    {
+        $model = new FournisseurModel();
+        $fournisseur = $model->find($id);
+
+        if (!$fournisseur) {
+            return redirect()->to('/fournisseur')->with('error', 'Fournisseur introuvable.');
+        }
+
+        // Passer les données du fournisseur à la vue
+        return view('edit_fournisseur', ['fournisseur' => $fournisseur]);
+    }
+    public function update_fournisseur($id)
+    {
+        $model = new FournisseurModel();
+        $fournisseur = $model->find($id);    
+        if (!$fournisseur) {
+            return redirect()->to('/fournisseur')->with('error', 'Fournisseur introuvable.');
+        }
+        if ($this->request->getMethod() === 'POST') {
+            $nomFournisseur = $this->request->getPost('nomFournisseur');
+            $contact = $this->request->getPost('contact');
+            $adresse = $this->request->getPost('adresse');
+
+            // Validation
+            if (empty($nomFournisseur) || empty($contact) || empty($adresse)) {
+                return redirect()->back()->with('error', 'Tous les champs sont obligatoires.');
+            }
+
+            // Préparer les données pour la mise à jour
+            $data = [
+                'nom' => $nomFournisseur,
+                'contact' => $contact,
+                'adresse' => $adresse,
+            ];
+
+            // Mise à jour dans la base de données
+            $model->update($id, $data);
+
+            return redirect()->to('/fournisseur')->with('success', 'Fournisseur mis à jour avec succès.');
+        }
+        return view('edit_fournisseur', ['fournisseur' => $fournisseur]);
+    }
+    public function delete_fournisseur($id)
+    {
+        $model = new FournisseurModel();
+        // Vérifier si le fournisseur existe
+        $fournisseur = $model->find($id);
+        if (!$fournisseur) {
+            log_message('error', 'Tentative de suppression d\'un fournisseur inexistant : ID ' . $id);
+            return redirect()->to('/fournisseur')->with('error', 'Fournisseur introuvable.');
+        }   
+        // Supprimer le fournisseur
+        $model->delete($id); 
+        return redirect()->to('/fournisseur')->with('success', 'Fournisseur supprimé avec succès.');
+
     }
 }

@@ -46,6 +46,11 @@ use CodeIgniter\Router\RouteCollection;
         $routes->post('/create_entree_stock', 'Produits::create_entree_stock');
         $routes->get('/rapport_stock', 'Produits::rapport_stock');
         $routes->get('/generate_rapport_stock', 'Produits::generate_rapport_stock');
+
+        $routes->get('/fournisseur', 'Users::listeFournisseur');
+        $routes->get('/add_fournisseur', 'Users::add_fournisseur');
+        $routes->post('/create_fournisseur', 'Users::create_fournisseur');
+        $routes->get('/edit_fournisseur/(:num)', 'Users::edit_fournisseur/$1');
     });
 
 

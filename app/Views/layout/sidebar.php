@@ -37,6 +37,13 @@ function isParentActive($segment, $values) {
                 </a>
                 <div class="triangle"></div>
             </li>
+            <li class="nav-item <?= isParentActive($uri->getSegment(1), ['fournisseur', 'add_fournisseur']) ?>" data-item="fournisseur">
+                <a class="nav-item-hold" href="#">
+                    <i class="nav-icon i-Checked-User"></i>
+                    <span class="nav-text">Fournisseur</span>
+                </a>
+                <div class="triangle"></div>
+            </li>
             <li class="nav-item <?= isParentActive($uri->getSegment(1), ['add_entree_stock', 'add_sortie_stock','mouvement']) ?>" data-item="apps">
                 <a class="nav-item-hold" href="#">
                     <i class="nav-icon i-Arrow-Down-in-Circle"></i>
@@ -73,7 +80,7 @@ function isParentActive($segment, $values) {
         <i class="sidebar-close i-Close" (click)="toggelSidebar()"></i>
         <header>
             <div class="logo">
-                <img src="<?= base_url('assets/images/logo-text.png') ?>" alt="">
+                <img src="<?= base_url('assets/images/logogest.png') ?>" alt="" style="height: 62px;">
             </div>
         </header>
 
@@ -125,6 +132,28 @@ function isParentActive($segment, $values) {
                     <a href="<?= site_url('add_categorie') ?>">
                         <i class="nav-icon i-Add-File"></i>
                         <span class="item-name">Ajouter une catégorie</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Submenu fournisseur -->
+        <div class="submenu-area" data-parent="fournisseur">
+            <header>
+                <h6>Fournisseurs</h6>
+                <p>Toutes les fournisseurs</p>
+            </header>
+            <ul class="childNav">
+                <li class="nav-item <?= isActive($uri->getSegment(1), 'fournisseur') ?>">
+                    <a href="<?= site_url('fournisseur') ?>">
+                        <i class="nav-icon i-Folder"></i>
+                        <span class="item-name">Liste des fournisseurs</span>
+                    </a>
+                </li>
+                <li class="nav-item <?= isActive($uri->getSegment(1), 'add_fournisseur') ?>">
+                    <a href="<?= site_url('add_fournisseur') ?>">
+                        <i class="nav-icon i-Add-File"></i>
+                        <span class="item-name">Ajouter un fournisseur</span>
                     </a>
                 </li>
             </ul>
